@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command:
+      - "--admin-password-file"
+      - "/run/secrets/portainer_admin_password"
+      - "--data"
+      - "/var/lib/portainer"
+    environment:
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.entrypoints: web-secure
+      traefik.http.services.portainer.loadbalancer.passHostHeader: true
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - portainer_admin_password
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./lib:/var/lib/portainer
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/vault:/mnt/vault
+
+secrets:
+  portainer_admin_password:
+    file: /mnt/vault/secrets/portainer/admin_password
+
+networks:
+  backend:
+    external: true
+    
+      
+      
