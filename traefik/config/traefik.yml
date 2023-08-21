@@ -39,6 +39,8 @@ entryPoints:
   web-secure:
     address: :443/tcp
     http:
+      middlewares:
+        - "authelia@file"
       tls:
         certResolver: production
       
