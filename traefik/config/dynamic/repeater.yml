@@ -1,0 +1,13 @@
+http:
+  routers:
+    repeater:
+      entrypoints:
+        - web-secure
+      rule: Host(`repeater.andronics.io`)
+      service: repeater
+  services:
+    repeater:
+      loadBalancer:
+        servers:
+          - url: http://tplinkrepeater.net/
+
