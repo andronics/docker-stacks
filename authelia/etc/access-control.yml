@@ -33,4 +33,5 @@ access_control:
     # 2FA - Domains
     - policy: two_factor
       domain:
+        - 'portainer.andronics.io'
         - 'traefik.andronics.io'
