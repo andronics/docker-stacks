@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      TZ: Europe/London
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_LOG_LEVEL: info
+      WATCHTOWER_REMOVE_VOLUMES: false
+      WATCHTOWER_DEBUG: false
+      WATCHTOWER_TRACE: false
+    labels:
+      traefik.enable: false
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  backend:
+    external: true
+
+    
+      
+      
