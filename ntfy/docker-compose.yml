@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    command:
+      - serve
+    environment:
+      TZ: Europe/London
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ntfy.entrypoints: web-secure
+      traefik.http.services.ntfy.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./cache:/var/cache/ntfy
+      - ./etc:/etc/ntfy
+      - ./lib:/var/lib/ntfy
+
+networks:
+  backend:
+    external: true
