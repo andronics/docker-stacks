@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    extra_hosts:
+      - host.docker.internal:172.17.0.1
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+      traefik.enable: true
+      traefik.http.routers.traefik.entrypoints: web-secure
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.services.traefik.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    ports: 
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    security_opt:
+      - "no-new-privileges=true"
+    volumes:
+      - ./config/dynamic:/etc/traefik.d:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./log:/var/log/traefik
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/vault:/mnt/vault
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  backend:
+    external: true
+  frontend:
+    external: true
+
+volumes:
+  vault:
+    external: true
