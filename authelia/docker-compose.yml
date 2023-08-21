@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  authelia:
+    image: ghcr.io/authelia/authelia:latest
+    command:
+      - "--config"
+      - "/etc/authelia/config.yml,/etc/authelia/access-control.yml"
+    container_name: authelia
+    environment:
+      # https://www.authelia.com/configuration/methods/secrets/
+      AUTHELIA_JWT_SECRET_FILE: /run/secrets/authelia_jwt_secret
+      AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE: /run/secrets/authelia_notifier_smtp_password
+      AUTHELIA_SESSION_SECRET_FILE: /run/secrets/authelia_session_secret
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /run/secrets/authelia_storage_encryption_key
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.authelia.entrypoints: web-secure
+      traefik.http.routers.authelia.rule: Host(`auth.andronics.io`)
+      traefik.http.services.authelia.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - authelia_jwt_secret
+      - authelia_notifier_smtp_password
+      - authelia_session_secret
+      - authelia_storage_encryption_key
+    volumes:
+      - ./etc:/etc/authelia
+      - ./lib:/var/lib/authelia
+      - ./log:/var/log/authelia
+      - /etc/localtime:/etc/localtime
+      - /mnt/vault/certs:/mnt/vault/certs
+
+secrets:
+  authelia_jwt_secret:
+    file: /mnt/vault/secrets/authelia/jwt_secret
+  authelia_notifier_smtp_password:
+    file: /mnt/vault/secrets/authelia/notifier_smtp_password
+  authelia_session_secret:
+    file: /mnt/vault/secrets/authelia/session_secret
+  authelia_storage_encryption_key:
+    file: /mnt/vault/secrets/authelia/storage_encryption_key
+
+networks:
+  backend:
+    external: true
+
+      
+      

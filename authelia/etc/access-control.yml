@@ -1,0 +1,36 @@
+# https://www.authelia.com/configuration/security/access-control/
+
+access_control:
+  
+  default_policy: one_factor
+
+  networks:
+
+    - name: internal
+      networks:
+        - '172.16.0.0/20'
+
+    - name: local
+      networks:
+        - '192.168.1.0/24'
+  
+  rules:
+
+    # Bypass - Local / Internal Networks
+    - policy: bypass
+      domain:
+        - 'andronics.io'
+        - '*.andronics.io'
+      networks:
+        - 'internal'
+        - 'local'
+    
+    # Bypass - Domains
+    - policy: bypass
+      domain:
+        - 'auth.andronics.io'
+
+    # 2FA - Domains
+    - policy: two_factor
+      domain:
+        - 'traefik.andronics.io'
