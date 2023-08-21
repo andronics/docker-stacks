@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  code:
+    build: .
+    container_name: code
+    environment:
+      PUID: 1000
+      PGID: 1000
+      PROXY_DOMAIN: code.andronics.io
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.code.entrypoints: web-secure
+      traefik.http.services.code.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/config
+      - /mnt:/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  backend:
+    external: true
+
+      
+      
