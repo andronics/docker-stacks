@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  privatebin:
+    image: jgeusebroek/privatebin
+    container_name: privatebin
+    environment:
+      GID: 1000
+      UID: 1000
+      PHP_TZ: Europe/London
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.privatebin.entrypoints: web-secure
+      traefik.http.services.privatebin.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/privatebin/config
+      - ./data:/privatebin/data
+      
+networks:
+  backend:
+    external: true
+    
+
+      
+      
