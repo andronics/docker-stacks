@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      AUDIOBOOKSHELF_UID: 1000
+      AUDIOBOOKSHELF_GID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.audiobookshelf.entrypoints: web-secure
+      traefik.http.services.audiobookshelf.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/config
+      - ./metadata:/metadata
+      - /mnt/media:/mnt/media
+      
+networks:
+  backend:
+    external: true
+    
+
+      
+      
