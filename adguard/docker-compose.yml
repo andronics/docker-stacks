@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  adguard:
+    image: adguard/adguardhome:latest
+    container_name: adguard
+    environment:
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.adguard.entrypoints: web-secure
+      traefik.http.services.adguard.loadbalancer.passHostHeader: true
+      traefik.http.services.adguard.loadbalancer.server.port: 3000
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/opt/adguardhome/conf
+      - ./work:/opt/adguardhome/work
+
+networks:
+  backend:
+    external: true
+    
+
+      
+      

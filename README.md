@@ -2,6 +2,7 @@
 
 ## Services
 
+* adguard - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/adguard/docker-compose.yml)
 * audiobookserver - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/audiobookserver/docker-compose.yml)
 * authelia - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/authelia/docker-compose.yml)
 * code - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/code/docker-compose.yml)
