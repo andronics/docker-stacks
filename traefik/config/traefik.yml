@@ -43,6 +43,8 @@ entryPoints:
         - "authelia@file"
       tls:
         certResolver: production
+  wireguard:
+    address: :51820/udp
       
 global:
   checkNewVersion: false
