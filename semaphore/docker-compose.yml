@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  
+  semaphore:
+    image: semaphoreui/semaphore:latest
+    container_name: semaphore
+    hostname: semaphore.andronics.io
+    depends_on:
+      - semaphore-db
+    environment:
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION_FILE: /run/secrets/semaphore_access_key_encryption
+      SEMAPHORE_ADMIN_NAME: admin
+      SEMAPHORE_ADMIN_EMAIL: admin@localhost
+      SEMAPHORE_ADMIN_FILE: /run/secrets/semaphore_admin_username
+      SEMAPHORE_ADMIN_PASSWORD_FILE: /run/secrets/semaphore_admin_password
+      SEMAPHORE_DB: semaphore
+      SEMAPHORE_DB_USER_FILE: /run/secrets/semaphore_database_username
+      SEMAPHORE_DB_PASS_FILE: /run/secrets/semaphore_database_password
+      SEMAPHORE_DB_HOST: semaphore-db # for postgres, change to: postgres
+      SEMAPHORE_DB_PORT: 3306 # change to 5432 for postgres
+      SEMAPHORE_DB_DIALECT: mysql
+      SEMAPHORE_LDAP_ACTIVATED: 'no' # if you wish to use ldap, set to: 'yes' 
+      SEMAPHORE_PLAYBOOK_PATH: /tmp/semaphore/
+    labels:
+      traefik.enable: true
+      traefik.http.routers.semaphore.entrypoints: web-secure
+      traefik.http.services.semaphore.loadbalancer.passHostHeader: true
+      traefik.http.services.semaphore.loadbalancer.server.port: 3000
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - semaphore_access_key_encryption
+      - semaphore_admin_password
+      - semaphore_admin_username
+      - semaphore_database_password
+      - semaphore_database_username
+
+  semaphore-db:
+    image: mysql:8.0
+    container_name: semaphore-db
+    hostname: semaphore-db.andronics.io
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: semaphore
+      MYSQL_PASSWORD_FILE: /run/secrets/semaphore_database_password
+      MYSQL_USER_FILE: /run/secrets/semaphore_database_username
+    labels:
+      traefik.enable: false
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - semaphore_database_password
+      - semaphore_database_username
+    volumes:
+      - semaphore-mysql:/var/lib/mysql
+
+networks:
+  backend:
+    external: true
+
+secrets:
+  semaphore_access_key_encryption:
+    file: /mnt/vault/secrets/semaphore/access_key_encryption
+  semaphore_admin_password:
+    file: /mnt/vault/secrets/semaphore/admin_password
+  semaphore_admin_username:
+    file: /mnt/vault/secrets/semaphore/admin_username
+  semaphore_database_password:
+    file: /mnt/vault/secrets/semaphore/database_password
+  semaphore_database_username:
+    file: /mnt/vault/secrets/semaphore/database_username
+
+volumes:
+  semaphore-mysql:
