@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  cloudflaredns:
+    image: cr.hotio.dev/hotio/cloudflareddns
+    container_name: cloudflaredns
+    environment:
+      FILE__CF_APITOKEN: /run/secrets/cloudflaredns_apitoken
+      FILE__CF_HOSTS: /run/secrets/cloudflaredns_hosts
+      FILE__CF_RECORDTYPES: /run/secrets/cloudflaredns_recordtypes
+      FILE__CF_ZONES: /run/secrets/cloudflaredns_zones
+      DETECTION_MODE: dig-google.com
+      INTERVAL: 300
+      LOG_LEVEL: 3
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: false
+      traefik.http.routers.cloudflaredns.entrypoints: web-secure
+      traefik.http.services.cloudflaredns.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - cloudflaredns_apitoken
+      - cloudflaredns_hosts
+      - cloudflaredns_recordtypes
+      - cloudflaredns_zones
+    volumes:
+      - ./config:/config
+
+networks:
+  backend:
+    external: true
+    
+secrets:
+  cloudflaredns_apitoken:
+    file: /mnt/vault/secrets/cloudflare/apitoken
+  cloudflaredns_hosts:
+    file: /mnt/vault/secrets/cloudflare/hosts
+  cloudflaredns_recordtypes:
+    file: /mnt/vault/secrets/cloudflare/recordtypes
+  cloudflaredns_zones:
+    file: /mnt/vault/secrets/cloudflare/zones

@@ -6,6 +6,7 @@
 * audiobookserver - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/audiobookserver/docker-compose.yml)
 * authelia - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/authelia/docker-compose.yml)
 * calibre - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/calibre/docker-compose.yml)
+* cloudflaredns - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/cloudflaredns/docker-compose.yml)
 * code - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/code/docker-compose.yml)
 * nodered - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/nodered/docker-compose.yml)
 * ntfy - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/ntfy/docker-compose.yml)
