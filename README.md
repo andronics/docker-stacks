@@ -8,6 +8,7 @@
 * calibre - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/calibre/docker-compose.yml)
 * cloudflaredns - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/cloudflaredns/docker-compose.yml)
 * code - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/code/docker-compose.yml)
+* emby - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/emby/docker-compose.yml)
 * nodered - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/nodered/docker-compose.yml)
 * ntfy - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/ntfy/docker-compose.yml)
 * portainer - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/portainer/docker-compose.yml)

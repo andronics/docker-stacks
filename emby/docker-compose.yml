@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  emby:
+    image: ghcr.io/linuxserver/emby:latest
+    container_name: emby
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.emby.entrypoints: web-secure
+      traefik.http.services.emby.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    ports: 
+      - 8096:8096
+      - 8920:8920
+    restart: unless-stopped
+    volumes:
+      - ./backup:/backup
+      - ./config:/config
+      - /mnt/media:/mnt/media
+
+networks:
+  backend:
+    external: true
