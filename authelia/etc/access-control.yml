@@ -30,6 +30,7 @@ access_control:
       domain:
         - 'audiobookshelf.andronics.io'
         - 'auth.andronics.io'
+        - 'emby.andronics.io'
 
     # 2FA - Domains
     - policy: two_factor
