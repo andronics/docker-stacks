@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  
+  calibre-server:
+    image: ghcr.io/linuxserver/calibre:latest
+    container_name: calibre-server
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: false
+      traefik.http.routers.calibre.entrypoints: web-secure
+      traefik.http.services.calibre.loadbalancer.passHostHeader: true
+      traefik.http.services.calibre.loadbalancer.server.port: 8080
+    networks:
+      - backend
+    restart: unless-stopped
+    security_opt:
+      - "seccomp=unconfined"
+    volumes:
+      - ./server:/config
+      - /mnt/media:/mnt/media
+
+  calibre-web:
+    image: ghcr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    depends_on:
+      - calibre-server
+    environment:
+      DOCKER_MODS: ghcr.io/linuxserver/mods:universal-calibre
+      OAUTHLIB_RELAX_TOKEN_SCOPE: 1 
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.calibre-web.entrypoints: web-secure
+      traefik.http.routers.calibre-web.rule: Host(`calibre.andronics.io`)
+      traefik.http.services.calibre-web.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./web:/config
+      - /mnt/media:/mnt/media
+      
+networks:
+  backend:
+    external: true
