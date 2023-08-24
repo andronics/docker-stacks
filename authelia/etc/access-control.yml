@@ -28,6 +28,7 @@ access_control:
     # Bypass - Domains
     - policy: bypass
       domain:
+        - 'audiobookshelf.andronics.io'
         - 'auth.andronics.io'
 
     # 2FA - Domains
