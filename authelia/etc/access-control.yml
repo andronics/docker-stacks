@@ -36,5 +36,6 @@ access_control:
     - policy: two_factor
       domain:
         - 'code.andronics.io'
+        - 'mongo.andronics.io'
         - 'portainer.andronics.io'
         - 'traefik.andronics.io'
