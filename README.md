@@ -10,6 +10,7 @@
 * code - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/code/docker-compose.yml)
 * emby - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/emby/docker-compose.yml)
 * flaresolverr - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/flaresolverr/docker-compose.yml)
+* mongo - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/mongo/docker-compose.yml)
 * nodered - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/nodered/docker-compose.yml)
 * ntfy - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/ntfy/docker-compose.yml)
 * portainer - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/portainer/docker-compose.yml)

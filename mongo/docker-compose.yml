@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+
+  mongo-server:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo-server
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_admin_username
+      MONGODB_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_admin_password
+      TZ: Europe/London
+    labels:
+      traefik.enable: false
+      traefik.tcp.routers.mongo-server.entrypoints: mongo-server
+      traefik.tcp.routers.mongo-server.rule: HostSNI(`mongo.andronics.io`)
+      traefik.tcp.routers.mongo-server.service: mongo-server
+      traefik.tcp.routers.mongo-server.tls.certresolver: production
+      traefik.tcp.routers.mongo-server.tls.domains[0].main: mongo.andronics.io
+      traefik.tcp.services.mongo-server.loadbalancer.server.port: 27017
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - mongo_admin_password
+      - mongo_admin_username
+
+  mongo-web:
+    image: mongo-express:latest
+    container_name: mongo-web
+    depends_on:
+      - mongo-server
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo-server
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_MONGODB_ADMINUSERNAME_FILE: /run/secrets/mongo_admin_username
+      ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_admin_password
+      ME_CONFIG_OPTIONS_EDITORTHEME: erlang-dark # (http://codemirror.net/demo/theme.html)
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.mongo-web.entrypoints: web-secure
+      traefik.http.routers.mongo-web.rule: Host(`mongo.andronics.io`)
+      traefik.http.services.mongo-web.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - mongo_admin_password
+      - mongo_admin_username
+
+networks:
+  backend:
+    external: true
+
+secrets:
+  mongo_admin_password:
+    file: /mnt/vault/secrets/mongo/admin_password
+  mongo_admin_username:
+    file: /mnt/vault/secrets/mongo/admin_username
