@@ -2,10 +2,10 @@ version: "3.9"
 
 services:
   
-  semaphore:
+  semaphore-server:
     image: semaphoreui/semaphore:latest
-    container_name: semaphore
-    hostname: semaphore.andronics.io
+    container_name: semaphore-server
+    hostname: semaphore-server.andronics.io
     depends_on:
       - semaphore-db
     environment:
@@ -25,6 +25,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.semaphore.entrypoints: web-secure
+      traefik.http.routers.semaphore.rule: Host(`semaphore.andronics.io`)
       traefik.http.services.semaphore.loadbalancer.passHostHeader: true
       traefik.http.services.semaphore.loadbalancer.server.port: 3000
     networks:
