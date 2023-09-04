@@ -25,6 +25,7 @@ services:
       - ./cache:/var/cache/ntfy
       - ./etc:/etc/ntfy
       - ./lib:/var/lib/ntfy
+      - ./log:/var/log/ntfy
 
 networks:
   backend:
