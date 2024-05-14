@@ -44,7 +44,8 @@ services:
     secrets:
       - mariadb_root_password
     volumes:
-      - ./data:/var/lib/mysql
+      - ./data/db:/var/lib/mysql
+      - ./data/docker-entrypoint.initdb.d:/docker-entrypoint.initdb.d
 
 networks:
   backend:
