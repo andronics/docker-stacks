@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    environment:
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.dozzle.entrypoints: web-secure
+      traefik.http.services.dozzle.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      
+networks:
+  backend:
+    external: true
