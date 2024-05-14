@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.grafana.entrypoints: web-secure
+      traefik.http.services.grafana.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    user: 1000:1000
+    volumes:
+      - ./data:/var/lib/grafana
+
+networks:
+  backend:
+    external: true
+    
+
+      
+      
