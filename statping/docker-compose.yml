@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  statping:
+    image: adamboutcher/statping-ng
+    container_name: statping
+    environment:
+      DB_CONN: sqlite
+    labels:
+      traefik.enable: true
+      traefik.http.routers.statping.entrypoints: web-secure
+      traefik.http.services.statping.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/app
+
+networks:
+  backend:
+    external: true
