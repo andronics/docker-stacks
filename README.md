@@ -11,6 +11,7 @@
 * dozzle - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/dozzle/docker-compose.yml)
 * emby - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/emby/docker-compose.yml)
 * flaresolverr - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/flaresolverr/docker-compose.yml)
+* mariadb - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/mariadb/docker-compose.yml)
 * mongo - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/mongo/docker-compose.yml)
 * n8n - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/n8n/docker-compose.yml)
 * nodered - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/nodered/docker-compose.yml)
