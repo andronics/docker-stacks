@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    environment:
+      ADMINER_DESIGN: pepa-linha-dark
+      ADMINER_PLUGINS: tables-filter tinymce
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.adminer.entrypoints: web-secure
+      traefik.http.services.adminer.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  backend:
+    external: true
