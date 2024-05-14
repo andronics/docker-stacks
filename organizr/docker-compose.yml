@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  organizr:
+    image: ghcr.io/organizr/organizr
+    container_name: organizr
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.http.routers.organizr.entrypoints: web-secure
+      traefik.http.services.organizr.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./config:/config
+      
+networks:
+  backend:
+    external: true

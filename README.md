@@ -16,6 +16,7 @@
 * n8n - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/n8n/docker-compose.yml)
 * nodered - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/nodered/docker-compose.yml)
 * ntfy - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/ntfy/docker-compose.yml)
+* organizr - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/organizr/docker-compose.yml)
 * portainer - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/portainer/docker-compose.yml)
 * privatebin - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/privatebin/docker-compose.yml)
 * semaphore - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/semaphore/docker-compose.yml)
