@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      TZ: Europe/London
+    labels:
+      traefik.enable: true
+      traefik.tcp.routers.postgres.entrypoints: postgres
+      traefik.tcp.routers.postgres.rule: HostSNI(`postgres.andronics.io`)
+      traefik.tcp.routers.postgres.service: postgres
+      traefik.tcp.routers.postgres.tls.certresolver: production
+      traefik.tcp.routers.postgres.tls.domains[0].main: postgres.andronics.io
+      traefik.tcp.services.postgres.loadbalancer.server.port: 5432
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - postgres_password
+      - postgres_user
+    volumes:
+      - ./data/db:/var/lib/postgresql
+      - ./data/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+networks:
+  backend:
+    external: true
+
+secrets:
+  postgres_password:
+    file: /mnt/vault/secrets/postgres/password
+  postgres_user:
+    file: /mnt/vault/secrets/postgres/user

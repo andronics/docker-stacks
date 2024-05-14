@@ -18,6 +18,7 @@
 * ntfy - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/ntfy/docker-compose.yml)
 * organizr - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/organizr/docker-compose.yml)
 * portainer - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/portainer/docker-compose.yml)
+* postgres - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/postgres/docker-compose.yml)
 * privatebin - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/privatebin/docker-compose.yml)
 * semaphore - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/semaphore/docker-compose.yml)
 * statping - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/statping/docker-compose.yml)
