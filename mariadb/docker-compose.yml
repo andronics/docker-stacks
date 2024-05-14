@@ -3,41 +3,18 @@ version: "3.9"
 services:
 
   mariadb:
-    image: adminer:latest
-    container_name: mariadb
-    depends_on:
-      - mariadb-server
-    environment:
-      ADMINER_DEFAULT_SERVER: mariadb-server
-      ADMINER_DESIGN: pepa-linha-dark
-      ADMINER_PLUGINS: tables-filter tinymce
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_admin_username
-      TZ: Europe/London
-    labels:
-      traefik.enable: true
-      traefik.http.routers.mariadb-web.entrypoints: web-secure
-      traefik.http.routers.mariadb-web.rule: Host(`mariadb.andronics.io`)
-      traefik.http.services.mariadb-web.loadbalancer.passHostHeader: true
-    networks:
-      - backend
-    restart: unless-stopped
-    secrets:
-      - mariadb_root_password
-
-  mariadb-server:
     image: mariadb:latest
-    container_name: mariadb-server
+    container_name: mariadb
     environment:
       MARIADB_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
       TZ: Europe/London
     labels:
       traefik.enable: true
-      traefik.tcp.routers.mariadb-server.entrypoints: mariadb-server
-      traefik.tcp.routers.mariadb-server.rule: HostSNI(`mariadb.andronics.io`)
-      traefik.tcp.routers.mariadb-server.service: mariadb-server
-      traefik.tcp.routers.mariadb-server.tls.certresolver: production
-      traefik.tcp.routers.mariadb-server.tls.domains[0].main: mariadb.andronics.io
-      traefik.tcp.services.mariadb-server.loadbalancer.server.port: 3306
+      traefik.tcp.routers.mariadb.entrypoints: mariadb
+      traefik.tcp.routers.mariadb.service: mariadb
+      traefik.tcp.routers.mariadb.tls.certresolver: production
+      traefik.tcp.routers.mariadb.tls.domains[0].main: mariadb.andronics.io
+      traefik.tcp.services.mariadb.loadbalancer.server.port: 3306
     networks:
       - backend
     restart: unless-stopped
