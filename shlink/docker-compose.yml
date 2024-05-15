@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+
+  shlink:
+    image: ghcr.io/shlinkio/shlink-web-client:latest
+    container_name: shlink
+    depends_on:
+      - shlink-server
+    hostname: shlink.andronics.io
+    environment:
+      SHLINK_SERVER_API_KEY_FILE: /run/secrets/shlink_api_key
+      SHLINK_SERVER_URL: https://l.andronics.io
+      a: 1
+    labels:
+      traefik.enable: true
+      traefik.http.routers.shlink.entrypoints: web-secure
+      traefik.http.routers.shlink.rule: Host(`shlink.andronics.io`)
+      traefik.http.services.shlink.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - shlink_api_key
+    volumes:
+      - ./client/docker-entrypoint.d/05-file-env.sh:/docker-entrypoint.d/05-file-env.sh
+      - ./utils:/utils
+
+  shlink-backend:
+    image: ghcr.io/shlinkio/shlink
+    container_name: shlink-backend
+    hostname: l.andronics.io
+    entrypoint:
+     - '/bin/sh'
+     - '/etc/shlink/docker-entrypoint.d/init.sh'
+    environment:
+      DEFAULT_DOMAIN: l.andronics.io
+      GEOLITE_LICENSE_KEY_FILE: /run/secrets/shlink_geolite_license_key
+      INITIAL_API_KEY_FILE: /run/secrets/shlink_api_key
+      IS_HTTPS_ENABLED: true
+      SHELL_VERBOSITY: 3
+    labels:
+      traefik.enable: true
+      traefik.http.routers.shlink-backend.entrypoints: web-secure
+      traefik.http.routers.shlink-backend.rule: Host(`l.andronics.io`)
+      traefik.http.services.shlink-backend.loadbalancer.passHostHeader: true
+    networks:
+      - backend
+    restart: unless-stopped
+    secrets:
+      - shlink_api_key
+      - shlink_geolite_license_key
+    volumes:
+      - ./server/docker-entrypoint.d:/etc/shlink/docker-entrypoint.d
+      - ./server/public:/etc/shlink/public
+      - ./utils:/utils
+
+  
+networks:
+  backend:
+    external: true
+
+secrets:
+  shlink_api_key:
+    file: /mnt/vault/secrets/shlink/api_key
+  shlink_geolite_license_key:
+    file: /mnt/vault/secrets/shlink/geolite_license_key

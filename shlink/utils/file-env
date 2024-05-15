@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+_file_env() {
+        local var=""
+        local fileVar=""
+        eval var="\$${1}"
+        eval fileVar="\$${1}_FILE"
+        local def="${2:-}"
+        if [ -n "${var:-}" ] && [ -n "${fileVar:-}" ]; then
+                echo >&2 "error: both ${1} and ${1}_FILE are set (but are exclusive)"
+                exit 1
+        fi
+        local val="$def"
+        if [ -n "${var:-}" ]; then
+                val="${var}"
+        elif [ -n "${fileVar:-}" ]; then
+                val="$(cat "${fileVar}")"
+        fi
+        export "${1}"="$val"
+        unset "${1}_FILE"
+}

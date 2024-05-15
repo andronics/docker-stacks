@@ -23,6 +23,7 @@
 * postgres - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/postgres/docker-compose.yml)
 * privatebin - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/privatebin/docker-compose.yml)
 * semaphore - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/semaphore/docker-compose.yml)
+* shlink - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/shlink/docker-compose.yml)
 * statping - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/statping/docker-compose.yml)
 * tor - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/tor/docker-compose.yml)
 * traefik - [docker-compose.yml](https://github.com/andronics/docker-stacks/blob/main/traefik/docker-compose.yml)
