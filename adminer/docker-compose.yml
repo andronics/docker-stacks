@@ -3,7 +3,7 @@ version: "3.9"
 services:
 
   adminer:
-    image: adminer:latest
+    build: .
     container_name: adminer
     environment:
       ADMINER_DESIGN: pepa-linha-dark
