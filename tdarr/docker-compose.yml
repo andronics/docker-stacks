@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:latest
+    container_name: tdarr
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      UMASK_SET: 002
+      VERSION: docker
+      internalNode: "true"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tdarr.entrypoints: web-secure
+      traefik.http.services.tdarr.loadbalancer.passHostHeader: true
+    logging:
+      options:
+        max-size: 10m
+        max-file: 5
+    networks:
+      - backend
+    restart: unless-stopped
+    # runtime: nvidia
+    volumes:
+      - ./data/configs:/app/configs
+      - ./data/logs:/app/logs
+      - ./data/server:/app/server
+      - /.pool/nvme:/.pool/nvme
+      
+      
+networks:
+  backend:
+    external: true
